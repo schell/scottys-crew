@@ -1,0 +1,7 @@
+*.save*
+dist
+**/.DS_Store
+*.swp
+*.swo
+*.hi
+*.o
