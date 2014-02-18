@@ -13,13 +13,13 @@ name:                scottys-crew
 version:             0.1.0.0
 
 -- A short (one-line) description of the package.
-synopsis:            Adds users and session handling to scotty.
+synopsis:            Adds a users db and sessions to scotty.
 
 -- A longer description of the package.
 -- description:
 
 -- The license under which the package is released.
-license:             BSD3
+license:             GPL-3
 
 -- The file containing the license text.
 license-file:        LICENSE
@@ -40,7 +40,7 @@ build-type:          Simple
 
 -- Extra files to be distributed with the package, such as examples or a
 -- README.
--- extra-source-files:
+extra-source-files:  README.md
 
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
@@ -57,7 +57,22 @@ library
   other-extensions:    OverloadedStrings, TemplateHaskell, TypeFamilies, TypeSynonymInstances, FlexibleInstances, DeriveDataTypeable
 
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.7 && <4.8, scotty >=0.7 && <0.8, acid-state >=0.12 && <0.13, warp >=2.0 && <2.1, transformers >=0.3 && <0.4, clientsession >=0.9 && <0.10, bcrypt >=0.0 && <0.1, time >=1.4 && <1.5, http-types >=0.8 && <0.9, aeson >=0.7 && <0.8, containers >=0.5 && <0.6, text >=1.1 && <1.2, bytestring >=0.10 && <0.11, blaze-html >=0.7 && <0.8, mtl >=2.1 && <2.2, safecopy >=0.8 && <0.9
+  build-depends:       base >=4.7 && <4.8,
+                       scotty >=0.7 && <0.8,
+                       acid-state >=0.12 && <0.13,
+                       warp >=2.0 && <2.1,
+                       transformers >=0.3 && <0.4,
+                       clientsession >=0.9 && <0.10,
+                       bcrypt >=0.0 && <0.1,
+                       time >=1.4 && <1.5,
+                       http-types >=0.8 && <0.9,
+                       aeson >=0.7 && <0.8,
+                       containers >=0.5 && <0.6,
+                       text >=1.1 && <1.2,
+                       bytestring >=0.10 && <0.11,
+                       blaze-html >=0.7 && <0.8,
+                       mtl >=2.1 && <2.2,
+                       safecopy >=0.8 && <0.9
 
   -- Directories containing source files.
   -- hs-source-dirs:
