@@ -11,9 +11,8 @@ import Control.Exception
 import Web.Scotty
 import Data.Acid
 import Data.Acid.Local
-import Network.Wai.Handler.Warp
 
-startScotty :: Port -> (AcidState Users -> ScottyM ()) -> IO ()
+startScotty :: Int -> (AcidState Users -> ScottyM ()) -> IO ()
 startScotty port f = do
     --(cfg, _) <- autoReload autoConfig [Required "btci.config"]
     --users <- lookupDefault "initialUsers" cfg []

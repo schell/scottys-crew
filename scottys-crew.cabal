@@ -60,7 +60,6 @@ library
   build-depends:       base >=4.7 && <4.8,
                        scotty >=0.7 && <0.8,
                        acid-state >=0.12 && <0.13,
-                       warp >=2.0 && <2.1,
                        transformers >=0.3 && <0.4,
                        clientsession >=0.9 && <0.10,
                        bcrypt >=0.0 && <0.1,
