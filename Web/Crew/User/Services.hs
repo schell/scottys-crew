@@ -3,6 +3,7 @@ module Web.Crew.User.Services where
 
 import           Control.Monad
 import           Control.Monad.IO.Class (liftIO)
+import           Crypto.BCrypt
 import           Web.Scotty
 import           Network.HTTP.Types.Status
 import           Data.Maybe
@@ -10,17 +11,20 @@ import           Data.Acid
 import           Data.Acid.Advanced
 import           Data.Time.Clock
 import           Data.Aeson hiding (json)
-import qualified Data.Text.Lazy as T
 import           Web.Crew.User.DB
 import           Web.Crew.User.Types
-import           Web.Crew.Session.Utils
+import           Web.Crew.Session
 import           Web.Crew.Templates
+import qualified Data.Text.Lazy as T
+import qualified Data.Text as TS
+import qualified Data.ByteString.Char8 as B
 
 
 userRoutes :: AcidState Users -> ScottyM ()
 userRoutes acid = do
     getIndex
     getLogin
+    getLogout
     postLogin acid
     getSession
     getHome
@@ -33,8 +37,13 @@ getIndex =
 
 
 getLogin :: ScottyM ()
-getLogin =
-    get "/login" $ blazePretty login
+getLogin = get "/login" $ blazePretty $ wrapper "Login" loginForm
+
+
+getLogout :: ScottyM ()
+getLogout = get "/logout" $ do
+    deauthorize
+    redirect "/"
 
 
 postLogin :: AcidState (EventState PeekUserWithEmail) -> ScottyM ()
@@ -42,6 +51,7 @@ postLogin acid =
     post "/login" $ do
         email <- param "email"
         pass  <- param "password"
+        dest  <- param "redirect" `rescue` (const $ return "/home") :: ActionM T.Text
 
         regdUser <- query' acid $ PeekUserWithEmail email
         when (isNothing regdUser) $ redirect "/login"
@@ -57,7 +67,7 @@ postLogin acid =
         -- Update the last user login.
         t <- liftIO getCurrentTime
         update' acid $ UpdateUser $ u{_userLastLogin=t}
-        redirect "/home"
+        redirect dest
 
 
 getSession :: ScottyM ()
@@ -86,8 +96,13 @@ ifAuthorizedPeekUser acid f =
 
 
 getUser :: AcidState (EventState PeekUserWithId) -> ScottyM ()
-getUser acid =
-    get "/account" $ ifAuthorizedPeekUser acid $ \user -> do
-        json $ object [ "user" .= user
-                      ]
+getUser acid = get "/account" $ ifAuthorizedPeekUser acid $ \user -> do
+    json $ object [ "user" .= user
+                  ]
+
+addUserWithNameEmailPassword :: AcidState (EventState AddUser) -> TS.Text -> TS.Text -> B.ByteString -> ActionM ()
+addUserWithNameEmailPassword acid name email pass = do
+    Just salt <- liftIO $ genSaltUsingPolicy slowerBcryptHashingPolicy
+    Just hpass <- liftIO $ hashPasswordUsingPolicy slowerBcryptHashingPolicy pass
+    update' acid $ AddUser name email hpass salt
 

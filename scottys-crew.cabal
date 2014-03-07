@@ -48,7 +48,7 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Web.Crew, Web.Crew.Session, Web.Crew.Templates, Web.Crew.User, Web.Crew.Session.Utils, Web.Crew.Templates.Helpers, Web.Crew.Templates.Login, Web.Crew.Templates.Renderer, Web.Crew.Templates.Wrapper, Web.Crew.User.DB, Web.Crew.User.Services, Web.Crew.User.Types
+  exposed-modules:     Web.Crew, Web.Crew.Session, Web.Crew.Templates, Web.Crew.User, Web.Crew.Templates.Helpers, Web.Crew.Templates.Forms, Web.Crew.Templates.Renderer, Web.Crew.Templates.Wrapper, Web.Crew.User.DB, Web.Crew.User.Services, Web.Crew.User.Types
 
   -- Modules included in this library but not exported.
   -- other-modules:

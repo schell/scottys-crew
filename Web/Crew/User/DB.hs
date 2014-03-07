@@ -6,6 +6,7 @@ import           Control.Monad.Reader
 import           Control.Monad.State
 import           Data.Acid
 import qualified Data.Map.Strict as M
+import qualified Data.ByteString as B
 import qualified Data.Text as T
 import           Web.Crew.User.Types
 
@@ -33,4 +34,18 @@ updateUser user = do
     put $ Users n m'
 
 
-$(makeAcidic ''Users ['peekUserWithEmail, 'peekUserWithId, 'updateUser])
+addUser :: T.Text -> T.Text -> B.ByteString -> B.ByteString -> Update Users ()
+addUser name email pass salt = do
+    (Users n m) <- get
+    let u  = User (Id n) name email pass salt zeroDay
+        m' = M.insert (Id n) u m
+    put $ Users (succ n) m'
+
+
+peekUsers :: Query Users [User]
+peekUsers = do
+    (Users _ m) <- ask
+    return $ M.elems m
+
+
+$(makeAcidic ''Users ['peekUserWithEmail, 'peekUserWithId, 'updateUser, 'addUser, 'peekUsers])

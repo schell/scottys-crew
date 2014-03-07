@@ -34,4 +34,4 @@ wrapper t content =
             --  /.container
             --  JavaScript
             script ! A.src "http://code.jquery.com/jquery-1.10.2.min.js" $ mempty
-            script ! A.src "http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" $ mempty
+            script ! A.src "http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" $ mempty

@@ -74,7 +74,7 @@ $(deriveSafeCopy 0 'base ''Users)
 
 
 initialUsers :: Users
-initialUsers = Users { _usersNextId = 1
+initialUsers = Users { _usersNextId = 3
                      , _usersMap = foldl (\m u -> M.insert (_userId u) u m) M.empty $
                          defaultAdmin : defaultUsers
                      }
